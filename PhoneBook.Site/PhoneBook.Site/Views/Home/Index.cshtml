@@ -6,6 +6,15 @@
 <h2>Index</h2>
 <div ng-controller="ContactsCtrl">
     <ul>
-        <li ng-repeat="contact in contacts"></li>
+        <li ng-controller="ContactCtrl" ng-repeat="contact in contacts">
+            <div ng-show="!editing"><a href="#" ng-click="edit()">{{contact.Name}} - {{contact.Number}}</a></div>
+            <div ng-show="editing||creating">
+                <form>
+                    <input type="text" ng-model="contact.Name" />
+                    <input type="text" ng-model="contact.Number" />
+                    <input type="submit" value="save" ng-click="save(contact)" />
+                </form>
+            </div>
+        </li>
     </ul>
 </div>

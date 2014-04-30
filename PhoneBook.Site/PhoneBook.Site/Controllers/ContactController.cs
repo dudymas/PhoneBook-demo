@@ -1,4 +1,5 @@
-﻿using PhoneBook.Site.Models;
+﻿using PhoneBook.Site.Contexts;
+using PhoneBook.Site.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace PhoneBook.Site.Controllers
         // GET api/contact
         public IEnumerable<Contact> Get()
         {
-            return new [] { new Contact{} };
+            using (var db = new ContactContext())
+            {
+                var results = db.Contacts.ToArray();
+                return results;
+            }
+            return new Contact[] { };
         }
 
         // GET api/contact/5
@@ -23,18 +29,42 @@ namespace PhoneBook.Site.Controllers
         }
 
         // POST api/contact
-        public void Post([FromBody]string value)
+        public bool Post([FromBody]Contact newContact)
         {
+            using (var db = new ContactContext())
+            {
+                saveNewContact(db.Contacts, newContact);
+                return true;
+            }
+            return false; // TODO: trycatch to this
+        }
+
+        private void saveNewContact(System.Data.Entity.DbSet<Contact> dbSet, Contact newContact)
+        {
+            throw new NotImplementedException();
         }
 
         // PUT api/contact/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Contact updatedContact)
         {
+            using (var db = new ContactContext ())
+            {
+                var target = db.Contacts.Where(c => c.Id == updatedContact.Id).FirstOrDefault();
+                if (target != default(Contact))
+                {
+                    target.Name = updatedContact.Name;
+                    target.Number = updatedContact.Number;
+                }
+                db.SaveChangesAsync();
+                return true;
+            }
+            return false;//TODO : Trycatch to this
         }
 
         // DELETE api/contact/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            return true;
         }
     }
 }
