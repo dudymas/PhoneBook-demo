@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhoneBook.Site.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,9 +11,9 @@ namespace PhoneBook.Site.Controllers
     public class ContactController : ApiController
     {
         // GET api/contact
-        public IEnumerable<string> Get()
+        public IEnumerable<Contact> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new [] { new Contact{} };
         }
 
         // GET api/contact/5
